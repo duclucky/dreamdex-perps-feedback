@@ -1,0 +1,15 @@
+{
+  "name": "dreamdex-feedback-investigation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only local reproduction tools for Feedback research.",
+  "dependencies": {
+    "@somnia-chain/markets-sdk": "0.32.1",
+    "viem": "2.57.7"
+  },
+  "scripts": {
+    "verify": "node scripts/verify-candidates.mjs",
+    "survey": "node scripts/read-only-survey.mjs"
+  }
+}

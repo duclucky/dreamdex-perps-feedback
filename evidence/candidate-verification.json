@@ -1,0 +1,63 @@
+{
+  "at": "2026-10-20T08:52:42.619Z",
+  "sdk": "0.32.1",
+  "chainId": 50383,
+  "signedOrSentTransactions": false,
+  "assertions": [
+    "Published string contract promises exact preservation or rejection",
+    "String 0.0000009 at 6 decimals is rounded without rejection",
+    "String 0.123456789 at 8 decimals is rounded without rejection",
+    "String 0.0000000000000000009 at 18 decimals is rounded without rejection",
+    "Exactly representable strings preserve value (control)",
+    "Published fundingRate property says per settlement window",
+    "Same declaration says denominator is calculation window, not settlement interval",
+    "Live guide recommends watchPerpMarkets and later says tail subscribes neither singleton",
+    "Live BTC calculation window and settlement interval differ by factor eight",
+    "Current raw rate requires eightfold denominator adjustment for one settlement",
+    "Shipped SDK acquires the singleton perp plane"
+  ],
+  "observations": [
+    {
+      "input": "0.0000009",
+      "decimals": 6,
+      "raw": "1",
+      "human": "0.000001"
+    },
+    {
+      "input": "0.123456789",
+      "decimals": 8,
+      "raw": "12345679",
+      "human": "0.12345679"
+    },
+    {
+      "input": "0.0000000000000000009",
+      "decimals": 18,
+      "raw": "1",
+      "human": "0.000000000000000001"
+    },
+    {
+      "name": "live-funding",
+      "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+      "rawFundingRate": "1766891057335065",
+      "windowSec": 28800,
+      "intervalSec": 3600,
+      "perIntervalRate": "220861382166883"
+    },
+    {
+      "name": "watch-perp-plane",
+      "liquidationRows": 3,
+      "fundingPaymentRows": 3,
+      "liquidationIds": [
+        "0x8be09f3907e85c5d05ea03fc34d89abaaac28186ed657a80bc48d6083dc54fb9_67",
+        "0x8be09f3907e85c5d05ea03fc34d89abaaac28186ed657a80bc48d6083dc54fb9_66",
+        "0x8be09f3907e85c5d05ea03fc34d89abaaac28186ed657a80bc48d6083dc54fb9_63"
+      ],
+      "fundingIds": [
+        "0x916432dcf15366d1c968de34f6773090b7ba269829688bd3189c8cecb0ae3234_1",
+        "0x79b5cdc33735d20f176d40bb3032865148038fad411df051d87b4079db235170_9",
+        "0xde29ba28f9e7b8760ecd17a736ee6acc4da86a018edb4c14b8b66adeb1eed589_20"
+      ],
+      "limitation": "Watch acquisition/hydration verified; no newly mined event was required or claimed."
+    }
+  ]
+}
