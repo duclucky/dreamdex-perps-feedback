@@ -1,0 +1,298 @@
+{
+  "at": "2026-10-29T23:14:37.163Z",
+  "sdk": "0.32.1",
+  "kitCommit": "25798660bbe4674a6f83a960b202852896e2fed4",
+  "sourceHashes": {
+    "orders": "a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583",
+    "markets": "95dfbbb84d114927f5a5df87f4a0d96114d3904cb98a8c06c42c3823880a0520"
+  },
+  "chainId": 50383,
+  "block": "36620783",
+  "account": "0x3390B5CE917F61640DBb68FD1D86F45E483648AC",
+  "transactions": 0,
+  "signer": false,
+  "sentFlagMeaning": "An upstream helper sent=true flag means the controlled eth_call seam completed. No transaction was broadcast; synthetic fills are empty and are not execution evidence.",
+  "fixtures": [
+    "assertTxOk success wrapper",
+    "all trader writes replaced with pinned eth_call",
+    "operator writes always throw"
+  ],
+  "checks": [
+    "long: real sizeOrder accepts an affordable base-price size",
+    "long: default placePerp changes the price after sizing",
+    "long: the shifted exact price fails initial margin at the same block",
+    "long: the actual pool eth_call rejects the shifted helper call for margin",
+    "long: sizing at the final price lowers size and passes the margin quote",
+    "long: the no-slippage original-price eth_call is accepted",
+    "long: the corrected final-price quantity eth_call is accepted",
+    "short: real sizeOrder accepts an affordable base-price size",
+    "short: default placePerp changes the price after sizing",
+    "short: the shifted exact price fails initial margin at the same block",
+    "short: the actual pool eth_call rejects the shifted helper call for margin",
+    "short: sizing at the final price lowers size and passes the margin quote",
+    "short: the no-slippage original-price eth_call is accepted",
+    "short: the corrected final-price quantity eth_call is accepted"
+  ],
+  "cases": [
+    {
+      "side": "long",
+      "touch": "2262830000000000000000",
+      "sized": {
+        "ok": true,
+        "quantity": "7500000000000000",
+        "limitedBy": "initialMargin",
+        "effectiveImfBps": "500"
+      },
+      "baseResult": {
+        "sent": true,
+        "filled": "0"
+      },
+      "actualPrice": "2267350000000000000000",
+      "shiftedError": {
+        "errorName": "InsufficientMarginForOrder",
+        "message": "The contract function \"placeOrder\" reverted."
+      },
+      "actualQuote": {
+        "priceable": true,
+        "asOfBlock": "36620783",
+        "effectiveImfBps": "500",
+        "markPrice": "2262271896770395500000",
+        "unlockedCollateral": "1871847127890243945",
+        "equity": "1315429021099650759",
+        "imRequirement": "452454379354079100",
+        "wallet": null,
+        "fundingPayer": null,
+        "mainWalletCapacity": null,
+        "increasingQuantity": "7500000000000000",
+        "reducingQuantity": "0",
+        "lockAmount": "888342024222033750",
+        "initialMarginPortion": "850256250000000000",
+        "adverseGapPortion": "38085774222033750",
+        "leverageSurcharge": "0",
+        "feeHeadroom": "0",
+        "topUpRequired": "0",
+        "walletCoversTopUp": true,
+        "ownWalletPull": "0",
+        "mainWalletPull": "0",
+        "mainFundingBlocked": false,
+        "hasCollateralForLock": true,
+        "meetsInitialMargin": false,
+        "voucherBlocked": false,
+        "restrictedBlocked": false,
+        "isolationBlocked": false,
+        "sufficient": false
+      },
+      "corrected": {
+        "ok": true,
+        "quantity": "7200000000000000",
+        "limitedBy": "initialMargin",
+        "effectiveImfBps": "500"
+      },
+      "correctedQuote": {
+        "priceable": true,
+        "asOfBlock": "36620783",
+        "effectiveImfBps": "500",
+        "markPrice": "2262271896770395500000",
+        "unlockedCollateral": "1871847127890243945",
+        "equity": "1315429021099650759",
+        "imRequirement": "452454379354079100",
+        "wallet": null,
+        "fundingPayer": null,
+        "mainWalletCapacity": null,
+        "increasingQuantity": "7200000000000000",
+        "reducingQuantity": "0",
+        "lockAmount": "852808343253152400",
+        "initialMarginPortion": "816246000000000000",
+        "adverseGapPortion": "36562343253152400",
+        "leverageSurcharge": "0",
+        "feeHeadroom": "0",
+        "topUpRequired": "0",
+        "walletCoversTopUp": true,
+        "ownWalletPull": "0",
+        "mainWalletPull": "0",
+        "mainFundingBlocked": false,
+        "hasCollateralForLock": true,
+        "meetsInitialMargin": true,
+        "voucherBlocked": false,
+        "restrictedBlocked": false,
+        "isolationBlocked": false,
+        "sufficient": true
+      },
+      "correctedResult": {
+        "sent": true,
+        "filled": "0"
+      }
+    },
+    {
+      "side": "short",
+      "touch": "2260780000000000000000",
+      "sized": {
+        "ok": true,
+        "quantity": "11500000000000000",
+        "limitedBy": "initialMargin",
+        "effectiveImfBps": "500"
+      },
+      "baseResult": {
+        "sent": true,
+        "filled": "0"
+      },
+      "actualPrice": "2256250000000000000000",
+      "shiftedError": {
+        "errorName": "InsufficientMarginForOrder",
+        "message": "The contract function \"placeOrder\" reverted."
+      },
+      "actualQuote": {
+        "priceable": true,
+        "asOfBlock": "36620783",
+        "effectiveImfBps": "500",
+        "markPrice": "2262271896770395500000",
+        "unlockedCollateral": "1871847127890243945",
+        "equity": "1315429021099650759",
+        "imRequirement": "452454379354079100",
+        "wallet": null,
+        "fundingPayer": null,
+        "mainWalletCapacity": null,
+        "increasingQuantity": "7500000000000000",
+        "reducingQuantity": "4000000000000000",
+        "lockAmount": "891257975777966250",
+        "initialMarginPortion": "846093750000000000",
+        "adverseGapPortion": "45164225777966250",
+        "leverageSurcharge": "0",
+        "feeHeadroom": "0",
+        "topUpRequired": "0",
+        "walletCoversTopUp": true,
+        "ownWalletPull": "0",
+        "mainWalletPull": "0",
+        "mainFundingBlocked": false,
+        "hasCollateralForLock": true,
+        "meetsInitialMargin": false,
+        "voucherBlocked": false,
+        "restrictedBlocked": false,
+        "isolationBlocked": false,
+        "sufficient": false
+      },
+      "corrected": {
+        "ok": true,
+        "quantity": "11200000000000000",
+        "limitedBy": "initialMargin",
+        "effectiveImfBps": "500"
+      },
+      "correctedQuote": {
+        "priceable": true,
+        "asOfBlock": "36620783",
+        "effectiveImfBps": "500",
+        "markPrice": "2262271896770395500000",
+        "unlockedCollateral": "1871847127890243945",
+        "equity": "1315429021099650759",
+        "imRequirement": "452454379354079100",
+        "wallet": null,
+        "fundingPayer": null,
+        "mainWalletCapacity": null,
+        "increasingQuantity": "7200000000000000",
+        "reducingQuantity": "4000000000000000",
+        "lockAmount": "855607656746847600",
+        "initialMarginPortion": "812250000000000000",
+        "adverseGapPortion": "43357656746847600",
+        "leverageSurcharge": "0",
+        "feeHeadroom": "0",
+        "topUpRequired": "0",
+        "walletCoversTopUp": true,
+        "ownWalletPull": "0",
+        "mainWalletPull": "0",
+        "mainFundingBlocked": false,
+        "hasCollateralForLock": true,
+        "meetsInitialMargin": true,
+        "voucherBlocked": false,
+        "restrictedBlocked": false,
+        "isolationBlocked": false,
+        "sufficient": true
+      },
+      "correctedResult": {
+        "sent": true,
+        "filled": "0"
+      }
+    }
+  ],
+  "market": {
+    "symbol": "ETH/USDso:USDso",
+    "display": "ETH-PERP",
+    "info": {
+      "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+      "poolAddress": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+      "lastPrice": "2264430000000000000000",
+      "lastTradeAt": "1793315397",
+      "cumulativeBaseVolume": "428744064600000000000000",
+      "cumulativeQuoteVolume": "1022175868942692000000000000",
+      "tradeCount": "477361",
+      "baseDecimals": 18,
+      "quoteDecimals": 18,
+      "createdAtTimestamp": "1789666704",
+      "createdAtBlock": "202552",
+      "marketType": "PERP",
+      "baseToken": "0x1516ccebca301d0651bc27dcdf9b1c2f18c3b4cd",
+      "quoteToken": "0xed7993a74dae1e6656b704a424dcd8711aaf4f72",
+      "baseSymbol": "ETH",
+      "quoteSymbol": "USDso",
+      "baseIsNative": false,
+      "tickSize": "10000000000000000",
+      "lotSize": "100000000000000",
+      "minQuantity": "4000000000000000",
+      "marginBank": "0x478769e1177c0773c43a593dccc4ad15f15f1394",
+      "initialMarginBps": 500,
+      "stopRegistry": "0x44bfa5b28684e8d2156d15b85902da18f02b3a34",
+      "markPrice": "2265012833605495000000",
+      "markPriceUpdatedAt": "1793312359",
+      "fundingRate": "-9001481648195277",
+      "cumulativeFundingPerUnit": "21599335632232709481152457412234687500",
+      "indexPrice": "2266499484937030000000",
+      "fundingUpdatedAt": "1793312359",
+      "fundingWindowSec": 28800,
+      "fundingIntervalSec": 3600,
+      "openInterest": "978393300000000000000",
+      "openInterestUpdatedAt": "1793315397",
+      "chainId": 50383
+    }
+  },
+  "simulations": [
+    {
+      "isBid": true,
+      "price": "2262830000000000000000",
+      "quantity": "7500000000000000",
+      "orderType": 2,
+      "result": [
+        true,
+        "3467987885857406690816"
+      ]
+    },
+    {
+      "isBid": true,
+      "price": "2267350000000000000000",
+      "quantity": "7200000000000000",
+      "orderType": 2,
+      "result": [
+        true,
+        "3467987885857406690816"
+      ]
+    },
+    {
+      "isBid": false,
+      "price": "2260780000000000000000",
+      "quantity": "11500000000000000",
+      "orderType": 2,
+      "result": [
+        true,
+        "3467987885857406690816"
+      ]
+    },
+    {
+      "isBid": false,
+      "price": "2256250000000000000000",
+      "quantity": "11200000000000000",
+      "orderType": 2,
+      "result": [
+        true,
+        "3467987885857406690816"
+      ]
+    }
+  ]
+}
