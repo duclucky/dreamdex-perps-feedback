@@ -1,0 +1,271 @@
+{
+  "startedAt": "2026-10-29T22:56:17.306Z",
+  "sdk": "0.32.1",
+  "chainId": 50383,
+  "transactions": 0,
+  "account": null,
+  "checks": [
+    "Funding cursor +1ms returns a row older than the inclusive since bound",
+    "Funding cursor +1ms repeats the exact indexed event",
+    "Documented pagination is still stuck on a third call",
+    "Control: advancing by a whole second returns the next event",
+    "Funding tail cursor still includes an event before since at limit 100",
+    "Control: exact historical range returns the requested two real candles",
+    "Unified since returns only newest candles, skipping existing requested history",
+    "Control: unified OHLCV does apply its lower-bound filter for a future since"
+  ],
+  "observations": {
+    "market": {
+      "symbol": "BTC/USDso:USDso",
+      "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+      "quoteDecimals": 18,
+      "baseDecimals": 8
+    },
+    "funding": {
+      "since": 1793308303000,
+      "first": [
+        {
+          "symbol": "BTC/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 79086.15019026594,
+          "indexPrice": 79105.80158325253,
+          "fundingRate": 0.000346428690876543,
+          "fundingTimestamp": 1793308303000,
+          "timestamp": 1793308303000,
+          "datetime": "2026-10-29T21:11:43.000Z",
+          "info": {
+            "id": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0_36550903_22",
+            "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+            "fundingRate": "346428690876543",
+            "cumulativeFundingPerUnit": "4882157280907742624622560534241932218750",
+            "indexPrice": "79105801583252534000000",
+            "markPrice": "79086150190265942000000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793304703",
+            "spanEnd": "1793308303",
+            "anchorResynced": false,
+            "timestamp": "1793308303",
+            "blockNumber": "36550903",
+            "txHash": "0x106c1f522310abdba6518fc5a6602ae45cf1dd490ee1c0a4be044d7e49dd43bf"
+          }
+        }
+      ],
+      "nextSince": 1793308303001,
+      "second": [
+        {
+          "symbol": "BTC/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 79086.15019026594,
+          "indexPrice": 79105.80158325253,
+          "fundingRate": 0.000346428690876543,
+          "fundingTimestamp": 1793308303000,
+          "timestamp": 1793308303000,
+          "datetime": "2026-10-29T21:11:43.000Z",
+          "info": {
+            "id": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0_36550903_22",
+            "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+            "fundingRate": "346428690876543",
+            "cumulativeFundingPerUnit": "4882157280907742624622560534241932218750",
+            "indexPrice": "79105801583252534000000",
+            "markPrice": "79086150190265942000000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793304703",
+            "spanEnd": "1793308303",
+            "anchorResynced": false,
+            "timestamp": "1793308303",
+            "blockNumber": "36550903",
+            "txHash": "0x106c1f522310abdba6518fc5a6602ae45cf1dd490ee1c0a4be044d7e49dd43bf"
+          }
+        }
+      ],
+      "third": [
+        {
+          "symbol": "BTC/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 79086.15019026594,
+          "indexPrice": 79105.80158325253,
+          "fundingRate": 0.000346428690876543,
+          "fundingTimestamp": 1793308303000,
+          "timestamp": 1793308303000,
+          "datetime": "2026-10-29T21:11:43.000Z",
+          "info": {
+            "id": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0_36550903_22",
+            "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+            "fundingRate": "346428690876543",
+            "cumulativeFundingPerUnit": "4882157280907742624622560534241932218750",
+            "indexPrice": "79105801583252534000000",
+            "markPrice": "79086150190265942000000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793304703",
+            "spanEnd": "1793308303",
+            "anchorResynced": false,
+            "timestamp": "1793308303",
+            "blockNumber": "36550903",
+            "txHash": "0x106c1f522310abdba6518fc5a6602ae45cf1dd490ee1c0a4be044d7e49dd43bf"
+          }
+        }
+      ],
+      "wholeSecond": [
+        {
+          "symbol": "BTC/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 78711.12622273447,
+          "indexPrice": 78732.91145663141,
+          "fundingRate": 0.0001,
+          "fundingTimestamp": 1793311903000,
+          "timestamp": 1793311903000,
+          "datetime": "2026-10-29T22:11:43.000Z",
+          "info": {
+            "id": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0_36586887_0",
+            "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+            "fundingRate": "100000000000000",
+            "cumulativeFundingPerUnit": "4883141442300950517272560534241932218750",
+            "indexPrice": "78732911456631412000000",
+            "markPrice": "78711126222734470500000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793308303",
+            "spanEnd": "1793311903",
+            "anchorResynced": false,
+            "timestamp": "1793311903",
+            "blockNumber": "36586887",
+            "txHash": "0x61f5a5943dfcfc8321aa81380161d868573b23ccb61f5ba3a65f98333c9082bf"
+          }
+        }
+      ],
+      "tailSince": 1793311903001,
+      "pastTail": [
+        {
+          "symbol": "BTC/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 78711.12622273447,
+          "indexPrice": 78732.91145663141,
+          "fundingRate": 0.0001,
+          "fundingTimestamp": 1793311903000,
+          "timestamp": 1793311903000,
+          "datetime": "2026-10-29T22:11:43.000Z",
+          "info": {
+            "id": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0_36586887_0",
+            "pool": "0x4181dd08e73bbcdd1ba3e615a18f6abd941b94c0",
+            "fundingRate": "100000000000000",
+            "cumulativeFundingPerUnit": "4883141442300950517272560534241932218750",
+            "indexPrice": "78732911456631412000000",
+            "markPrice": "78711126222734470500000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793308303",
+            "spanEnd": "1793311903",
+            "anchorResynced": false,
+            "timestamp": "1793311903",
+            "blockNumber": "36586887",
+            "txHash": "0x61f5a5943dfcfc8321aa81380161d868573b23ccb61f5ba3a65f98333c9082bf"
+          }
+        }
+      ]
+    },
+    "candles": {
+      "recent": [
+        [
+          1793314500000,
+          78914,
+          78935.3,
+          78914,
+          78935.3,
+          0.0004
+        ],
+        [
+          1793314560000,
+          78919.8,
+          78919.8,
+          78919.8,
+          78919.8,
+          0.0002
+        ]
+      ],
+      "older": [
+        {
+          "bucketStart": "1793310840",
+          "openPrice": "79164000000000000000000",
+          "high": "79401400000000000000000",
+          "low": "78964500000000000000000",
+          "closePrice": "79164000000000000000000",
+          "baseVolume": "5753000",
+          "quoteVolume": "4560282761000000000000",
+          "tradeCount": 23,
+          "lastFillId": "36576849_4"
+        },
+        {
+          "bucketStart": "1793310900",
+          "openPrice": "79164000000000000000000",
+          "high": "79401400000000000000000",
+          "low": "79163900000000000000000",
+          "closePrice": "79163900000000000000000",
+          "baseVolume": "4255000",
+          "quoteVolume": "3371625656000000000000",
+          "tradeCount": 14,
+          "lastFillId": "36577419_56"
+        }
+      ],
+      "oldSince": 1793310840000,
+      "fromOld": [
+        [
+          1793314500000,
+          78914,
+          78935.3,
+          78914,
+          78935.3,
+          0.0004
+        ],
+        [
+          1793314560000,
+          78919.8,
+          78919.8,
+          78919.8,
+          78919.8,
+          0.0002
+        ]
+      ],
+      "nativeRange": [
+        {
+          "bucketStart": "1793310840",
+          "openPrice": "79164000000000000000000",
+          "high": "79401400000000000000000",
+          "low": "78964500000000000000000",
+          "closePrice": "79164000000000000000000",
+          "baseVolume": "5753000",
+          "quoteVolume": "4560282761000000000000",
+          "tradeCount": 23,
+          "lastFillId": "36576849_4"
+        },
+        {
+          "bucketStart": "1793310900",
+          "openPrice": "79164000000000000000000",
+          "high": "79401400000000000000000",
+          "low": "79163900000000000000000",
+          "closePrice": "79163900000000000000000",
+          "baseVolume": "4255000",
+          "quoteVolume": "3371625656000000000000",
+          "tradeCount": 14,
+          "lastFillId": "36577419_56"
+        }
+      ],
+      "futureSince": 1793400979123,
+      "futureCandles": []
+    }
+  },
+  "sourceSha256": "28dfee523b64eacf37b4bb8618a0820ec6b88001f7b01cd95cc190d89c498050",
+  "finishedAt": "2026-10-29T22:56:19.227Z"
+}

@@ -1,0 +1,271 @@
+{
+  "startedAt": "2026-10-29T22:56:13.355Z",
+  "sdk": "0.32.1",
+  "chainId": 50383,
+  "transactions": 0,
+  "account": null,
+  "checks": [
+    "Funding cursor +1ms returns a row older than the inclusive since bound",
+    "Funding cursor +1ms repeats the exact indexed event",
+    "Documented pagination is still stuck on a third call",
+    "Control: advancing by a whole second returns the next event",
+    "Funding tail cursor still includes an event before since at limit 100",
+    "Control: exact historical range returns the requested two real candles",
+    "Unified since returns only newest candles, skipping existing requested history",
+    "Control: unified OHLCV does apply its lower-bound filter for a future since"
+  ],
+  "observations": {
+    "market": {
+      "symbol": "ETH/USDso:USDso",
+      "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+      "quoteDecimals": 18,
+      "baseDecimals": 18
+    },
+    "funding": {
+      "since": 1793308758000,
+      "first": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 2287.6006664408983,
+          "indexPrice": 2289.1545466466746,
+          "fundingRate": 0.0001,
+          "fundingTimestamp": 1793308758000,
+          "timestamp": 1793308758000,
+          "datetime": "2026-10-29T21:19:18.000Z",
+          "info": {
+            "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf_36555446_25",
+            "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+            "fundingRate": "100000000000000",
+            "cumulativeFundingPerUnit": "24149567322145799881220643463148437500",
+            "indexPrice": "2289154546646674500000",
+            "markPrice": "2287600666440898500000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793305158",
+            "spanEnd": "1793308758",
+            "anchorResynced": false,
+            "timestamp": "1793308758",
+            "blockNumber": "36555446",
+            "txHash": "0x65d08031e8d0208d9722a0e9d5cb61082be620cb23d933cdcdbe43cd6baaca5d"
+          }
+        }
+      ],
+      "nextSince": 1793308758001,
+      "second": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 2287.6006664408983,
+          "indexPrice": 2289.1545466466746,
+          "fundingRate": 0.0001,
+          "fundingTimestamp": 1793308758000,
+          "timestamp": 1793308758000,
+          "datetime": "2026-10-29T21:19:18.000Z",
+          "info": {
+            "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf_36555446_25",
+            "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+            "fundingRate": "100000000000000",
+            "cumulativeFundingPerUnit": "24149567322145799881220643463148437500",
+            "indexPrice": "2289154546646674500000",
+            "markPrice": "2287600666440898500000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793305158",
+            "spanEnd": "1793308758",
+            "anchorResynced": false,
+            "timestamp": "1793308758",
+            "blockNumber": "36555446",
+            "txHash": "0x65d08031e8d0208d9722a0e9d5cb61082be620cb23d933cdcdbe43cd6baaca5d"
+          }
+        }
+      ],
+      "third": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 2287.6006664408983,
+          "indexPrice": 2289.1545466466746,
+          "fundingRate": 0.0001,
+          "fundingTimestamp": 1793308758000,
+          "timestamp": 1793308758000,
+          "datetime": "2026-10-29T21:19:18.000Z",
+          "info": {
+            "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf_36555446_25",
+            "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+            "fundingRate": "100000000000000",
+            "cumulativeFundingPerUnit": "24149567322145799881220643463148437500",
+            "indexPrice": "2289154546646674500000",
+            "markPrice": "2287600666440898500000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793305158",
+            "spanEnd": "1793308758",
+            "anchorResynced": false,
+            "timestamp": "1793308758",
+            "blockNumber": "36555446",
+            "txHash": "0x65d08031e8d0208d9722a0e9d5cb61082be620cb23d933cdcdbe43cd6baaca5d"
+          }
+        }
+      ],
+      "wholeSecond": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 2265.012833605495,
+          "indexPrice": 2266.49948493703,
+          "fundingRate": -0.009001481648195277,
+          "fundingTimestamp": 1793312359000,
+          "timestamp": 1793312359000,
+          "datetime": "2026-10-29T22:19:19.000Z",
+          "info": {
+            "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf_36591451_12",
+            "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+            "fundingRate": "-9001481648195277",
+            "cumulativeFundingPerUnit": "21599335632232709481152457412234687500",
+            "indexPrice": "2266499484937030000000",
+            "markPrice": "2265012833605495000000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793308758",
+            "spanEnd": "1793312358",
+            "anchorResynced": false,
+            "timestamp": "1793312359",
+            "blockNumber": "36591451",
+            "txHash": "0x3104545b9cdf7e450cc584e910ddd5c46c4e04ed8b88f070ffb98f70ea3df081"
+          }
+        }
+      ],
+      "tailSince": 1793312359001,
+      "pastTail": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "chainId": 50383,
+          "markPrice": 2265.012833605495,
+          "indexPrice": 2266.49948493703,
+          "fundingRate": -0.009001481648195277,
+          "fundingTimestamp": 1793312359000,
+          "timestamp": 1793312359000,
+          "datetime": "2026-10-29T22:19:19.000Z",
+          "info": {
+            "id": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf_36591451_12",
+            "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+            "fundingRate": "-9001481648195277",
+            "cumulativeFundingPerUnit": "21599335632232709481152457412234687500",
+            "indexPrice": "2266499484937030000000",
+            "markPrice": "2265012833605495000000",
+            "intervalsSettled": "1",
+            "intervalsAccrued": "1",
+            "fundingWindowSec": 28800,
+            "fundingIntervalSec": 3600,
+            "spanStart": "1793308758",
+            "spanEnd": "1793312358",
+            "anchorResynced": false,
+            "timestamp": "1793312359",
+            "blockNumber": "36591451",
+            "txHash": "0x3104545b9cdf7e450cc584e910ddd5c46c4e04ed8b88f070ffb98f70ea3df081"
+          }
+        }
+      ]
+    },
+    "candles": {
+      "recent": [
+        [
+          1793314440000,
+          2269.85,
+          2269.85,
+          2269.63,
+          2269.63,
+          44.0587
+        ],
+        [
+          1793314500000,
+          2270.78,
+          2270.78,
+          2270.78,
+          2270.78,
+          2.3009
+        ]
+      ],
+      "older": [
+        {
+          "bucketStart": "1793310300",
+          "openPrice": "2265930000000000000000",
+          "high": "2268190000000000000000",
+          "low": "2265700000000000000000",
+          "closePrice": "2268190000000000000000",
+          "baseVolume": "134118600000000000000",
+          "quoteVolume": "304042136918000000000000",
+          "tradeCount": 12,
+          "lastFillId": "36571451_57"
+        },
+        {
+          "bucketStart": "1793310420",
+          "openPrice": "2265880000000000000000",
+          "high": "2265880000000000000000",
+          "low": "2157830000000000000000",
+          "closePrice": "2157830000000000000000",
+          "baseVolume": "13339000000000000000",
+          "quoteVolume": "29814815401000000000000",
+          "tradeCount": 36,
+          "lastFillId": "36572401_23"
+        }
+      ],
+      "oldSince": 1793310300000,
+      "fromOld": [
+        [
+          1793314440000,
+          2269.85,
+          2269.85,
+          2269.63,
+          2269.63,
+          44.0587
+        ],
+        [
+          1793314500000,
+          2270.78,
+          2270.78,
+          2270.78,
+          2270.78,
+          2.3009
+        ]
+      ],
+      "nativeRange": [
+        {
+          "bucketStart": "1793310300",
+          "openPrice": "2265930000000000000000",
+          "high": "2268190000000000000000",
+          "low": "2265700000000000000000",
+          "closePrice": "2268190000000000000000",
+          "baseVolume": "134118600000000000000",
+          "quoteVolume": "304042136918000000000000",
+          "tradeCount": 12,
+          "lastFillId": "36571451_57"
+        },
+        {
+          "bucketStart": "1793310420",
+          "openPrice": "2265880000000000000000",
+          "high": "2265880000000000000000",
+          "low": "2157830000000000000000",
+          "closePrice": "2157830000000000000000",
+          "baseVolume": "13339000000000000000",
+          "quoteVolume": "29814815401000000000000",
+          "tradeCount": 36,
+          "lastFillId": "36572401_23"
+        }
+      ],
+      "futureSince": 1793400975801,
+      "futureCandles": []
+    }
+  },
+  "sourceSha256": "28dfee523b64eacf37b4bb8618a0820ec6b88001f7b01cd95cc190d89c498050",
+  "finishedAt": "2026-10-29T22:56:15.904Z"
+}

@@ -10,6 +10,7 @@
   },
   "scripts": {
     "verify": "node scripts/verify-candidates.mjs",
-    "survey": "node scripts/read-only-survey.mjs"
+    "survey": "node scripts/read-only-survey.mjs",
+    "verify:history": "node scripts/verify-history-round2.mjs"
   }
 }
