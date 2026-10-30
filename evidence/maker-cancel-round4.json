@@ -1,0 +1,479 @@
+{
+  "at": "2026-10-30T03:31:43.332Z",
+  "kitCommit": "25798660bbe4674a6f83a960b202852896e2fed4",
+  "sdk": "0.32.1",
+  "mode": "offline controlled-source harness",
+  "transactions": 0,
+  "rpcCalls": 0,
+  "syntheticOrderState": true,
+  "sourceHashes": {
+    "markets": "95dfbbb84d114927f5a5df87f4a0d96114d3904cb98a8c06c42c3823880a0520",
+    "orders": "a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583",
+    "maker": "ed8ccfafe233796f9764ea6f946c8450fd732754f3abcc853f74dd46a9c62e32"
+  },
+  "checks": [
+    "Healthy control cancels old quotes and all final quotes",
+    "Healthy control still replaces both sides",
+    "Both failed old cancels leave both original IDs live at exit",
+    "Both failed old cancels are followed by two replacement placements",
+    "Original IDs are never retried after being forgotten",
+    "Strategy claims quotes pulled despite two simulated live orders",
+    "Single failed old cancel leaves one orphan ID",
+    "Single failure does not prevent replacement quotes",
+    "Shutdown-only failure leaves two simulated live orders",
+    "Shutdown-only failure still claims successful cleanup",
+    "Already-filled race control leaves no orphan orders",
+    "Already-filled race control still replaces and exits normally"
+  ],
+  "cases": [
+    {
+      "scenario": {
+        "name": "healthy_requote",
+        "cycles": 2,
+        "failure": "none"
+      },
+      "openAtExit": [],
+      "peakOpen": 2,
+      "replacements": 2,
+      "trace": [
+        {
+          "op": "place",
+          "id": "1",
+          "poll": 0,
+          "open": [
+            "1"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "2",
+          "poll": 0,
+          "open": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "1",
+          "poll": 1
+        },
+        {
+          "op": "cancel_ok",
+          "id": "1"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "2",
+          "poll": 1
+        },
+        {
+          "op": "cancel_ok",
+          "id": "2"
+        },
+        {
+          "op": "place",
+          "id": "3",
+          "poll": 1,
+          "open": [
+            "3"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "4",
+          "poll": 1,
+          "open": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "3",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "3"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "4",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "4"
+        }
+      ],
+      "logs": [
+        "perp-maker on ETH-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "controlled startup check",
+        "placed quote long 0.25 ETH @ 99.85 | filled 0 | order 1",
+        "placed quote short 0.25 ETH @ 100.15 | filled 0 | order 2",
+        "placed quote long 0.2475 ETH @ 100.84 | filled 0 | order 3",
+        "placed quote short 0.2475 ETH @ 101.15 | filled 0 | order 4",
+        "quotes pulled, exiting"
+      ],
+      "shutdownCalls": 1
+    },
+    {
+      "scenario": {
+        "name": "both_old_cancels_fail",
+        "cycles": 2,
+        "failure": "first_pair"
+      },
+      "openAtExit": [
+        "1",
+        "2"
+      ],
+      "peakOpen": 4,
+      "replacements": 2,
+      "trace": [
+        {
+          "op": "place",
+          "id": "1",
+          "poll": 0,
+          "open": [
+            "1"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "2",
+          "poll": 0,
+          "open": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "1",
+          "poll": 1
+        },
+        {
+          "op": "cancel_failed",
+          "id": "1",
+          "error": "RpcError"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "2",
+          "poll": 1
+        },
+        {
+          "op": "cancel_failed",
+          "id": "2",
+          "error": "RpcError"
+        },
+        {
+          "op": "place",
+          "id": "3",
+          "poll": 1,
+          "open": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "4",
+          "poll": 1,
+          "open": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "3",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "3"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "4",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "4"
+        }
+      ],
+      "logs": [
+        "perp-maker on ETH-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "controlled startup check",
+        "placed quote long 0.25 ETH @ 99.85 | filled 0 | order 1",
+        "placed quote short 0.25 ETH @ 100.15 | filled 0 | order 2",
+        "cancel 1 skipped: @somnia-chain/markets-sdk: rpc cancelOrder failed: controlled cancellation transport failure; fixture order remains live",
+        "cancel 2 skipped: @somnia-chain/markets-sdk: rpc cancelOrder failed: controlled cancellation transport failure; fixture order remains live",
+        "placed quote long 0.2475 ETH @ 100.84 | filled 0 | order 3",
+        "placed quote short 0.2475 ETH @ 101.15 | filled 0 | order 4",
+        "quotes pulled, exiting"
+      ],
+      "shutdownCalls": 1
+    },
+    {
+      "scenario": {
+        "name": "one_old_cancel_fails",
+        "cycles": 2,
+        "failure": "first_id"
+      },
+      "openAtExit": [
+        "1"
+      ],
+      "peakOpen": 3,
+      "replacements": 2,
+      "trace": [
+        {
+          "op": "place",
+          "id": "1",
+          "poll": 0,
+          "open": [
+            "1"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "2",
+          "poll": 0,
+          "open": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "1",
+          "poll": 1
+        },
+        {
+          "op": "cancel_failed",
+          "id": "1",
+          "error": "RpcError"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "2",
+          "poll": 1
+        },
+        {
+          "op": "cancel_ok",
+          "id": "2"
+        },
+        {
+          "op": "place",
+          "id": "3",
+          "poll": 1,
+          "open": [
+            "1",
+            "3"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "4",
+          "poll": 1,
+          "open": [
+            "1",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "3",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "3"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "4",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "4"
+        }
+      ],
+      "logs": [
+        "perp-maker on ETH-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "controlled startup check",
+        "placed quote long 0.25 ETH @ 99.85 | filled 0 | order 1",
+        "placed quote short 0.25 ETH @ 100.15 | filled 0 | order 2",
+        "cancel 1 skipped: @somnia-chain/markets-sdk: rpc cancelOrder failed: controlled cancellation transport failure; fixture order remains live",
+        "placed quote long 0.2475 ETH @ 100.84 | filled 0 | order 3",
+        "placed quote short 0.2475 ETH @ 101.15 | filled 0 | order 4",
+        "quotes pulled, exiting"
+      ],
+      "shutdownCalls": 1
+    },
+    {
+      "scenario": {
+        "name": "shutdown_cancels_fail",
+        "cycles": 1,
+        "failure": "all"
+      },
+      "openAtExit": [
+        "1",
+        "2"
+      ],
+      "peakOpen": 2,
+      "replacements": 0,
+      "trace": [
+        {
+          "op": "place",
+          "id": "1",
+          "poll": 0,
+          "open": [
+            "1"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "2",
+          "poll": 0,
+          "open": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "1",
+          "poll": 1
+        },
+        {
+          "op": "cancel_failed",
+          "id": "1",
+          "error": "RpcError"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "2",
+          "poll": 1
+        },
+        {
+          "op": "cancel_failed",
+          "id": "2",
+          "error": "RpcError"
+        }
+      ],
+      "logs": [
+        "perp-maker on ETH-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "controlled startup check",
+        "placed quote long 0.25 ETH @ 99.85 | filled 0 | order 1",
+        "placed quote short 0.25 ETH @ 100.15 | filled 0 | order 2",
+        "cancel 1 skipped: @somnia-chain/markets-sdk: rpc cancelOrder failed: controlled cancellation transport failure; fixture order remains live",
+        "cancel 2 skipped: @somnia-chain/markets-sdk: rpc cancelOrder failed: controlled cancellation transport failure; fixture order remains live",
+        "quotes pulled, exiting"
+      ],
+      "shutdownCalls": 1
+    },
+    {
+      "scenario": {
+        "name": "already_filled_race",
+        "cycles": 2,
+        "failure": "gone"
+      },
+      "openAtExit": [],
+      "peakOpen": 2,
+      "replacements": 2,
+      "trace": [
+        {
+          "op": "place",
+          "id": "1",
+          "poll": 0,
+          "open": [
+            "1"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "2",
+          "poll": 0,
+          "open": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "1",
+          "poll": 1
+        },
+        {
+          "op": "already_gone",
+          "id": "1"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "2",
+          "poll": 1
+        },
+        {
+          "op": "already_gone",
+          "id": "2"
+        },
+        {
+          "op": "place",
+          "id": "3",
+          "poll": 1,
+          "open": [
+            "3"
+          ]
+        },
+        {
+          "op": "place",
+          "id": "4",
+          "poll": 1,
+          "open": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "3",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "3"
+        },
+        {
+          "op": "cancel_attempt",
+          "id": "4",
+          "poll": 2
+        },
+        {
+          "op": "cancel_ok",
+          "id": "4"
+        }
+      ],
+      "logs": [
+        "perp-maker on ETH-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "controlled startup check",
+        "placed quote long 0.25 ETH @ 99.85 | filled 0 | order 1",
+        "placed quote short 0.25 ETH @ 100.15 | filled 0 | order 2",
+        "cancel 1 skipped: @somnia-chain/markets-sdk: call reverted: IncorrectOrder()",
+        "cancel 2 skipped: @somnia-chain/markets-sdk: call reverted: IncorrectOrder()",
+        "placed quote long 0.2475 ETH @ 100.84 | filled 0 | order 3",
+        "placed quote short 0.2475 ETH @ 101.15 | filled 0 | order 4",
+        "quotes pulled, exiting"
+      ],
+      "shutdownCalls": 1
+    }
+  ]
+}
