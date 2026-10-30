@@ -1,0 +1,347 @@
+{
+  "at": "2026-10-30T14:21:18.548Z",
+  "sdk": "0.32.1",
+  "kitCommit": "4e75896896e024c03e2033d5920514f249998cd6",
+  "transactions": 0,
+  "signer": false,
+  "mode": "controlled strategy workers plus read-only historical contract control",
+  "sourceHashes": {
+    "starter": "3e0158ab088489fbd63ff4a0e1a38174d6c5be6a3fee1fd85c4ea19065f731b1",
+    "funding": "0e622d76f877566d2385f30aad43fcf48550b2a9e9a7ee8b9bfd2eb8b3d79423",
+    "margin": "041cfbb5a34bc80c6ddb2d71d81b592c979826a950d617aebdbb2533ea58d23a",
+    "markets": "95dfbbb84d114927f5a5df87f4a0d96114d3904cb98a8c06c42c3823880a0520",
+    "orders": "a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583",
+    "rates": "c118b8fa828129449ce81e4bef35e6cac5459e370dbfcc32e96925cd9d2bb91f"
+  },
+  "checks": [
+    "starter: held low-free account exits 1 before reading its position",
+    "starter: sufficient-free control reaches position management and close boundary",
+    "starter: flat low-free account still correctly fails entry preflight",
+    "starter: lowering unused entry notional lets the same held position be managed",
+    "starter: no worker reaches an opening write",
+    "funding: held low-free account exits 1 before reading its position",
+    "funding: sufficient-free control reaches position management and close boundary",
+    "funding: flat low-free account still correctly fails entry preflight",
+    "funding: lowering unused entry notional lets the same held position be managed",
+    "funding: no worker reaches an opening write",
+    "Historical account has a positive ETH position at the pinned block",
+    "Actual preflight rejects the actual nonempty bank for 25 USDso entry requirement",
+    "Same-block SDK quote confirms a pure reduction with zero margin lock and no auto-pull",
+    "Same-block reducing-order eth_call returns acceptance"
+  ],
+  "cases": [
+    {
+      "strategy": "starter",
+      "scenario": {
+        "name": "held_low_free",
+        "held": true,
+        "free": 5,
+        "notional": 50
+      },
+      "exitCode": 1,
+      "trace": {
+        "positionReads": 0,
+        "marginReads": 1,
+        "closes": [],
+        "sleeps": 0,
+        "shutdown": 0,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 50 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "controlled link check",
+        "MarginBank has 5.00 unlocked, and this configuration needs about 25.00 to open its first position. In the DreamDEX app, open Perps ⇆ Spot and move USDso from Spot wallet to Perps account, or lower the notional."
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "starter",
+      "scenario": {
+        "name": "held_entry_threshold_control",
+        "held": true,
+        "free": 25,
+        "notional": 50
+      },
+      "exitCode": 0,
+      "trace": {
+        "positionReads": 2,
+        "marginReads": 1,
+        "closes": [
+          "stop-loss"
+        ],
+        "sleeps": 1,
+        "shutdown": 1,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 50 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "controlled link check",
+        "MarginBank ready: 25.00 unlocked, 0.00 locked, equity 25.00, status Healthy.",
+        "trading key: the take-profit and stop-loss are watched by this bot, not armed on the stop registry, so they only act while the bot runs.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "already long 0.004 ETH, managing it instead of opening another",
+        "watching take-profit 2040.00 and stop-loss 1980.00",
+        "long 0.004 ETH | uPnL 0.0000 | exits watched | mark 1970.00",
+        "the bot is stopping: its take-profit and stop-loss stop with it, the position stays open.",
+        "done"
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "starter",
+      "scenario": {
+        "name": "flat_low_free_control",
+        "held": false,
+        "free": 5,
+        "notional": 50
+      },
+      "exitCode": 1,
+      "trace": {
+        "positionReads": 0,
+        "marginReads": 1,
+        "closes": [],
+        "sleeps": 0,
+        "shutdown": 0,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 50 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "controlled link check",
+        "MarginBank has 5.00 unlocked, and this configuration needs about 25.00 to open its first position. In the DreamDEX app, open Perps ⇆ Spot and move USDso from Spot wallet to Perps account, or lower the notional."
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "starter",
+      "scenario": {
+        "name": "held_lower_entry_setting_control",
+        "held": true,
+        "free": 5,
+        "notional": 2
+      },
+      "exitCode": 0,
+      "trace": {
+        "positionReads": 2,
+        "marginReads": 1,
+        "closes": [
+          "stop-loss"
+        ],
+        "sleeps": 1,
+        "shutdown": 1,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 2 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "controlled link check",
+        "MarginBank ready: 5.00 unlocked, 0.00 locked, equity 5.00, status Healthy.",
+        "trading key: the take-profit and stop-loss are watched by this bot, not armed on the stop registry, so they only act while the bot runs.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "already long 0.004 ETH, managing it instead of opening another",
+        "watching take-profit 2040.00 and stop-loss 1980.00",
+        "long 0.004 ETH | uPnL 0.0000 | exits watched | mark 1970.00",
+        "the bot is stopping: its take-profit and stop-loss stop with it, the position stays open.",
+        "done"
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "funding",
+      "scenario": {
+        "name": "held_low_free",
+        "held": true,
+        "free": 5,
+        "notional": 50
+      },
+      "exitCode": 1,
+      "trace": {
+        "positionReads": 0,
+        "marginReads": 1,
+        "closes": [],
+        "sleeps": 0,
+        "shutdown": 0,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-funding on ETH-PERP | enter above 10.00% APR, exit below 3.00% | 50 USDso per entry at 2x, cap 200 | dry-run false",
+        "controlled link check",
+        "MarginBank has 5.00 unlocked, and this configuration needs about 25.00 to open its first position. In the DreamDEX app, open Perps ⇆ Spot and move USDso from Spot wallet to Perps account, or lower the notional."
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "funding",
+      "scenario": {
+        "name": "held_entry_threshold_control",
+        "held": true,
+        "free": 25,
+        "notional": 50
+      },
+      "exitCode": 0,
+      "trace": {
+        "positionReads": 2,
+        "marginReads": 1,
+        "closes": [
+          "carry exit"
+        ],
+        "sleeps": 1,
+        "shutdown": 1,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-funding on ETH-PERP | enter above 10.00% APR, exit below 3.00% | 50 USDso per entry at 2x, cap 200 | dry-run false",
+        "controlled link check",
+        "MarginBank ready: 25.00 unlocked, 0.00 locked, equity 25.00, status Healthy.",
+        "funding 109.500% APR, paying shorts | holding long 8.00 USDso",
+        "closing: funding flipped against this side",
+        "stopped. The position is left open deliberately: closing it on exit would realise PnL nobody asked to realise."
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "funding",
+      "scenario": {
+        "name": "flat_low_free_control",
+        "held": false,
+        "free": 5,
+        "notional": 50
+      },
+      "exitCode": 1,
+      "trace": {
+        "positionReads": 0,
+        "marginReads": 1,
+        "closes": [],
+        "sleeps": 0,
+        "shutdown": 0,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-funding on ETH-PERP | enter above 10.00% APR, exit below 3.00% | 50 USDso per entry at 2x, cap 200 | dry-run false",
+        "controlled link check",
+        "MarginBank has 5.00 unlocked, and this configuration needs about 25.00 to open its first position. In the DreamDEX app, open Perps ⇆ Spot and move USDso from Spot wallet to Perps account, or lower the notional."
+      ],
+      "stderr": ""
+    },
+    {
+      "strategy": "funding",
+      "scenario": {
+        "name": "held_lower_entry_setting_control",
+        "held": true,
+        "free": 5,
+        "notional": 2
+      },
+      "exitCode": 0,
+      "trace": {
+        "positionReads": 2,
+        "marginReads": 1,
+        "closes": [
+          "carry exit"
+        ],
+        "sleeps": 1,
+        "shutdown": 1,
+        "entryCalls": 0
+      },
+      "logs": [
+        "perp-funding on ETH-PERP | enter above 10.00% APR, exit below 3.00% | 2 USDso per entry at 2x, cap 200 | dry-run false",
+        "controlled link check",
+        "MarginBank ready: 5.00 unlocked, 0.00 locked, equity 5.00, status Healthy.",
+        "funding 109.500% APR, paying shorts | holding long 8.00 USDso",
+        "closing: funding flipped against this side",
+        "stopped. The position is left open deliberately: closing it on exit would realise PnL nobody asked to realise."
+      ],
+      "stderr": ""
+    }
+  ],
+  "historical": {
+    "block": "36620783",
+    "account": "0x3390B5CE917F61640DBb68FD1D86F45E483648AC",
+    "pool": "0xd6cb1dd58580b84d76068ac21594219ce03aeddf",
+    "bank": "0x478769e1177c0773c43a593dccc4ad15f15f1394",
+    "margin": {
+      "unlockedCollateralBalance": "1871847127890243945",
+      "lockedCollateral": "0",
+      "activePerpPools": [
+        "0xD6Cb1DD58580B84D76068aC21594219ce03aeddf"
+      ],
+      "equity": "1315429021099650759",
+      "withdrawable": "1871847127890243945",
+      "imReq": "452454379354079100",
+      "mmReq": "226227189677039550",
+      "cmReq": "113113594838519775",
+      "marginStatus": "Healthy",
+      "asOfBlock": "36620783"
+    },
+    "position": {
+      "size": "4000000000000000",
+      "avgEntryPrice": "2399370000000000000000",
+      "entryFundingIndex": "19592912164188913178240009057074812500",
+      "lastUpdatedTimestampNs": "0"
+    },
+    "book": {
+      "tickSize": "10000000000000000",
+      "minQuantity": "4000000000000000",
+      "lotSize": "100000000000000"
+    },
+    "levels": [
+      {
+        "price": "2260780000000000000000",
+        "quantity": "7372100000000000000"
+      }
+    ],
+    "preflight": {
+      "ok": false,
+      "snapshot": {
+        "unlocked": "1871847127890243945",
+        "locked": "0",
+        "equity": "1315429021099650759",
+        "withdrawable": "1871847127890243945",
+        "imReq": "452454379354079100",
+        "mmReq": "226227189677039550",
+        "cmReq": "113113594838519775",
+        "status": "Healthy",
+        "activePools": [
+          "0xD6Cb1DD58580B84D76068aC21594219ce03aeddf"
+        ]
+      },
+      "message": "MarginBank has 1.87 unlocked, and this configuration needs about 25.00 to open its first position. Deposit more, or lower the notional."
+    },
+    "reducingQuote": {
+      "priceable": true,
+      "asOfBlock": "36620783",
+      "effectiveImfBps": "500",
+      "markPrice": "2262271896770395500000",
+      "unlockedCollateral": "1871847127890243945",
+      "equity": "1315429021099650759",
+      "imRequirement": "452454379354079100",
+      "wallet": null,
+      "fundingPayer": null,
+      "mainWalletCapacity": null,
+      "increasingQuantity": "0",
+      "reducingQuantity": "4000000000000000",
+      "lockAmount": "0",
+      "initialMarginPortion": "0",
+      "adverseGapPortion": "0",
+      "leverageSurcharge": "0",
+      "feeHeadroom": "0",
+      "topUpRequired": "0",
+      "walletCoversTopUp": true,
+      "ownWalletPull": "0",
+      "mainWalletPull": "0",
+      "mainFundingBlocked": false,
+      "hasCollateralForLock": true,
+      "meetsInitialMargin": true,
+      "voucherBlocked": false,
+      "restrictedBlocked": false,
+      "isolationBlocked": false,
+      "sufficient": true
+    },
+    "simulation": {
+      "price": "2256250000000000000000",
+      "quantity": "4000000000000000",
+      "result": [
+        true,
+        "3467987885857406690816"
+      ]
+    },
+    "limits": "Owner eth_call only. Success means the requested reducing order is accepted in simulation, not a mined fill, full close, operator grant or restart of a real bot."
+  }
+}
