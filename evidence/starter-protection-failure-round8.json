@@ -1,0 +1,492 @@
+{
+  "at": "2026-10-30T18:37:36.049Z",
+  "kitCommit": "4e75896896e024c03e2033d5920514f249998cd6",
+  "sdk": "0.32.1",
+  "rpcCalls": 0,
+  "transactions": 0,
+  "syntheticState": true,
+  "checks": [
+    "entry_then_insufficient_stop_deposit: entry confirms before the SDK bracket fails",
+    "entry_then_insufficient_stop_deposit: process exits with synthetic exposure and zero stops",
+    "entry_then_insufficient_stop_deposit: no management poll, close request or shutdown recovery executes",
+    "entry_then_stop_rpc_failure: entry confirms before the SDK bracket fails",
+    "entry_then_stop_rpc_failure: process exits with synthetic exposure and zero stops",
+    "entry_then_stop_rpc_failure: no management poll, close request or shutdown recovery executes",
+    "Insufficient-deposit case encodes 0.30 native value against the 0.10 fixture balance",
+    "Insufficient-deposit case already read/printed the stop cost before opening",
+    "Funded control creates both decoded SDK stop IDs before entering management",
+    "Funded control observes the synthetic trigger/flat state and shuts down cleanly",
+    "Dry-run control sends neither an entry nor a stop and leaves no exposure",
+    "Rejected-entry control never attempts a bracket and leaves no exposure",
+    "Counterfactual: the same one-time pre-broadcast fault can recover on a bounded second SDK attempt",
+    "Counterfactual: only one entry occurs and management begins after protection succeeds"
+  ],
+  "cases": [
+    {
+      "scenario": {
+        "name": "entry_then_insufficient_stop_deposit",
+        "native": "100000000000000000",
+        "error": "none"
+      },
+      "exitCode": 1,
+      "trace": {
+        "position": "4000000000000000",
+        "armed": [],
+        "entryCalls": 1,
+        "stopAttempts": 1,
+        "positionReads": 1,
+        "sleeps": 0,
+        "closeCalls": 0,
+        "shutdownCalls": 0,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "entry_attempt",
+            "position": "0",
+            "armed": [],
+            "quantity": "4000000000000000"
+          },
+          {
+            "op": "entry_confirmed_fixture",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_attempt",
+            "position": "4000000000000000",
+            "armed": [],
+            "method": "createLinkedPendingOrders",
+            "value": "300000000000000000",
+            "nativeBalance": "100000000000000000"
+          },
+          {
+            "op": "stop_rejected_insufficient_balance",
+            "position": "4000000000000000",
+            "armed": []
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)",
+        "placed open long 0.004 ETH @ 2004 | filled 0.004 | order -"
+      ],
+      "stderr": "@somnia-chain/markets-sdk: rpc stop placement failed: controlled insufficient funds for 0.30 native stop deposit\n"
+    },
+    {
+      "scenario": {
+        "name": "entry_then_stop_rpc_failure",
+        "native": "500000000000000000",
+        "error": "stop_rpc"
+      },
+      "exitCode": 1,
+      "trace": {
+        "position": "4000000000000000",
+        "armed": [],
+        "entryCalls": 1,
+        "stopAttempts": 1,
+        "positionReads": 1,
+        "sleeps": 0,
+        "closeCalls": 0,
+        "shutdownCalls": 0,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "entry_attempt",
+            "position": "0",
+            "armed": [],
+            "quantity": "4000000000000000"
+          },
+          {
+            "op": "entry_confirmed_fixture",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_attempt",
+            "position": "4000000000000000",
+            "armed": [],
+            "method": "createLinkedPendingOrders",
+            "value": "300000000000000000",
+            "nativeBalance": "500000000000000000"
+          },
+          {
+            "op": "stop_rejected_rpc",
+            "position": "4000000000000000",
+            "armed": []
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)",
+        "placed open long 0.004 ETH @ 2004 | filled 0.004 | order -"
+      ],
+      "stderr": "@somnia-chain/markets-sdk: rpc stop placement failed: controlled transport rejection before broadcast\n"
+    },
+    {
+      "scenario": {
+        "name": "funded_stop_control",
+        "native": "500000000000000000",
+        "error": "none"
+      },
+      "exitCode": 0,
+      "trace": {
+        "position": "0",
+        "armed": [],
+        "entryCalls": 1,
+        "stopAttempts": 1,
+        "positionReads": 2,
+        "sleeps": 1,
+        "closeCalls": 0,
+        "shutdownCalls": 1,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "entry_attempt",
+            "position": "0",
+            "armed": [],
+            "quantity": "4000000000000000"
+          },
+          {
+            "op": "entry_confirmed_fixture",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_attempt",
+            "position": "4000000000000000",
+            "armed": [],
+            "method": "createLinkedPendingOrders",
+            "value": "300000000000000000",
+            "nativeBalance": "500000000000000000"
+          },
+          {
+            "op": "stop_pair_created",
+            "position": "4000000000000000",
+            "armed": [
+              "101",
+              "102"
+            ]
+          },
+          {
+            "op": "management_poll",
+            "position": "4000000000000000",
+            "armed": [
+              "101",
+              "102"
+            ]
+          },
+          {
+            "op": "synthetic_trigger_fired",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "shutdown",
+            "position": "0",
+            "armed": []
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)",
+        "placed open long 0.004 ETH @ 2004 | filled 0.004 | order -",
+        "armed a long bracket on ETH-PERP: take-profit 2040.00 (#101), stop-loss 1980.00 (#102)",
+        "position is closed; cancelling anything the bracket left armed",
+        "done"
+      ],
+      "stderr": ""
+    },
+    {
+      "scenario": {
+        "name": "dry_run_low_balance_control",
+        "native": "100000000000000000",
+        "error": "none",
+        "dryRun": true
+      },
+      "exitCode": 0,
+      "trace": {
+        "position": "0",
+        "armed": [],
+        "entryCalls": 0,
+        "stopAttempts": 0,
+        "positionReads": 1,
+        "sleeps": 0,
+        "closeCalls": 0,
+        "shutdownCalls": 1,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "shutdown",
+            "position": "0",
+            "armed": []
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run true",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)",
+        "[dry-run] would place open long 0.004 ETH @ 2004",
+        "[dry-run] would arm a long bracket on ETH-PERP: take-profit 2040.00, stop-loss 1980.00, whole position, 0.30 SOMI locked"
+      ],
+      "stderr": ""
+    },
+    {
+      "scenario": {
+        "name": "entry_failure_control",
+        "native": "500000000000000000",
+        "error": "entry"
+      },
+      "exitCode": 1,
+      "trace": {
+        "position": "0",
+        "armed": [],
+        "entryCalls": 1,
+        "stopAttempts": 0,
+        "positionReads": 1,
+        "sleeps": 0,
+        "closeCalls": 0,
+        "shutdownCalls": 0,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "entry_attempt",
+            "position": "0",
+            "armed": [],
+            "quantity": "4000000000000000"
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)"
+      ],
+      "stderr": "@somnia-chain/markets-sdk: rpc entry failed: controlled pre-broadcast rejection\n"
+    },
+    {
+      "scenario": {
+        "name": "bounded_retry_counterfactual",
+        "native": "500000000000000000",
+        "error": "stop_rpc",
+        "retry": true
+      },
+      "exitCode": 0,
+      "trace": {
+        "position": "0",
+        "armed": [],
+        "entryCalls": 1,
+        "stopAttempts": 2,
+        "positionReads": 2,
+        "sleeps": 1,
+        "closeCalls": 0,
+        "shutdownCalls": 1,
+        "events": [
+          {
+            "op": "stop_cost_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "entry_attempt",
+            "position": "0",
+            "armed": [],
+            "quantity": "4000000000000000"
+          },
+          {
+            "op": "entry_confirmed_fixture",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_attempt",
+            "position": "4000000000000000",
+            "armed": [],
+            "method": "createLinkedPendingOrders",
+            "value": "300000000000000000",
+            "nativeBalance": "500000000000000000"
+          },
+          {
+            "op": "stop_rejected_rpc",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "retry_counterfactual",
+            "position": "4000000000000000",
+            "armed": []
+          },
+          {
+            "op": "stop_attempt",
+            "position": "4000000000000000",
+            "armed": [],
+            "method": "createLinkedPendingOrders",
+            "value": "300000000000000000",
+            "nativeBalance": "500000000000000000"
+          },
+          {
+            "op": "stop_pair_created",
+            "position": "4000000000000000",
+            "armed": [
+              "101",
+              "102"
+            ]
+          },
+          {
+            "op": "management_poll",
+            "position": "4000000000000000",
+            "armed": [
+              "101",
+              "102"
+            ]
+          },
+          {
+            "op": "synthetic_trigger_fired",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "position_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "stop_list_read",
+            "position": "0",
+            "armed": []
+          },
+          {
+            "op": "shutdown",
+            "position": "0",
+            "armed": []
+          }
+        ]
+      },
+      "logs": [
+        "perp-starter on ETH-PERP (ETH/USDso:USDso) | long 8 USDso at 2x | take-profit 2% stop-loss 1% | dry-run false",
+        "MarginBank ready: 100.00 unlocked, 0.00 locked, equity 100.00, status Healthy.",
+        "each pending stop locks 0.15 SOMI, refunded on cancel; a bracket needs two.",
+        "leverage already 2x on ETH-PERP, left alone",
+        "size ceiling is set by initialMargin (this is not an error on its own)",
+        "placed open long 0.004 ETH @ 2004 | filled 0.004 | order -",
+        "armed a long bracket on ETH-PERP: take-profit 2040.00 (#101), stop-loss 1980.00 (#102)",
+        "position is closed; cancelling anything the bracket left armed",
+        "done"
+      ],
+      "stderr": ""
+    }
+  ],
+  "sourceHashes": {
+    "starter": "3e0158ab088489fbd63ff4a0e1a38174d6c5be6a3fee1fd85c4ea19065f731b1",
+    "margin": "041cfbb5a34bc80c6ddb2d71d81b592c979826a950d617aebdbb2533ea58d23a",
+    "orders": "a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583",
+    "markets": "95dfbbb84d114927f5a5df87f4a0d96114d3904cb98a8c06c42c3823880a0520",
+    "stops": "25fad946e4510d135091f8dca24e19e4347814bc8b415b89141dea67be514a25"
+  },
+  "sdkSourceHashes": {
+    "dist/perp/stops.js": "890ca8bb7f82da684f946982e3c417fcee171ca82b2ff164a0f7accdb15a8209",
+    "dist/tradeAbi.js": "5d1fe223d94edded27512b50a094b8639afa1a788b6865964c95975b1c4bce7a"
+  },
+  "completedAt": "2026-10-30T18:37:45.306Z"
+}
