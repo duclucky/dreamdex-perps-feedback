@@ -1,6 +1,6 @@
 # dreamDEX Perps Feedback
 
-Eleven independently reproduced **normal** Feedback candidates for the dreamDEX Perps Builder Bounty. Reports 01–03 formed the original DoraHacks submission; reports 04–11 are the October 30–31 follow-ups. The eleven-report package belongs to Build 50054. Acceptance, novelty and payment are determined by the organizer. They cover documentation/SDK/bot-kit correctness, not a demonstrated trading loss or contract exploit.
+Twelve independently reproduced **normal** Feedback candidates for the dreamDEX Perps Builder Bounty. Reports 01–03 formed the original DoraHacks submission; reports 04–12 are the October 30–31 follow-ups. The twelve-report package belongs to Build 50054. Acceptance, novelty and payment are determined by the organizer. They cover documentation/SDK/bot-kit correctness, not a demonstrated trading loss or contract exploit.
 
 ## Reproduce
 
@@ -17,6 +17,7 @@ node scripts/verify-guard-discovery.mjs
 node scripts/verify-resume-preflight.mjs
 node scripts/verify-analytics-rounding.mjs
 node scripts/verify-starter-protection-failure.mjs
+node scripts/verify-starter-short-thresholds.mjs
 ```
 
 Run from this directory. These scripts do not read a private key, request a signature, claim funds or submit a transaction. `verify` uses public RPC/indexer reads and WebSocket watch acquisition/hydration; it closes the watch and exchange. The scripts have deadlines and save timestamped JSON in `evidence/`. The findings verification checks observations that establish the discrepancies; passing means the discrepancies were reproduced, not that the SDK was fixed.
@@ -34,6 +35,8 @@ Run from this directory. These scripts do not read a private key, request a sign
 `verify-analytics-rounding.mjs` checks report 10 with 28 assertions at Tokyo block 37225356: eight real single-pool accounts isolate PnL rounding from funding; a real 21-pool account confirms sum reconciliation. Five fractional-loss cases differ by one collateral wei each; a floor-only arithmetic counterfactual restores equality. Economic magnitude is tiny; no material loss or liquidation effect is established. Archive RPC access is required; no key or broadcast.
 
 `verify-starter-protection-failure.mjs` checks report 11: 14 assertions across six controlled CLI workers. Actual pinned starter/helpers and installed SDK stop-call construction run with synthetic account/budget/receipts/time. Successful entry followed by rejected stop setup exits before management; funded, dry-run and rejected-entry controls isolate the failure. A bounded-retry counterfactual models only a known pre-broadcast fault. No RPC, real position, key or transaction.
+
+`verify-starter-short-thresholds.mjs` checks report 12: 18 assertions across ten actual CLI workers. Default short TP 2% / SL 1% encodes TP 1% / SL 2% from the reference mark; custom unequal settings confirm the swap. Watched exits miss the configured stop and take profit early. Actual SDK calldata encoding/decoding, long/equal controls and two arithmetic-only counterfactuals isolate the cause. Account/receipts/fills/time are synthetic; no RPC, signer or transaction.
 
 ## Reports
 
@@ -55,7 +58,9 @@ Run from this directory. These scripts do not read a private key, request a sign
 
 - [11 — Starter exits after entry when TP/SL setup fails](feedback/11-starter-exits-after-entry-when-bracket-setup-fails.md) — October 31 follow-up; controlled offline state
 
-Proposed severities are normal and remain subject to organizer review. Reports 01–05 use no account or signer. Reports 06 and 09 use historical public-account simulations without a key or broadcast. Report 10 uses historical public-account reads only. Reports 01–06 and 09–10 concern Hideki testnet (50383), the event's Tokyo/DreamDEX region. Reports 07–08 and 11 test official examples offline with synthetic order/account/registry state and do not connect to a chain.
+- [12 — Short starter swaps take-profit and stop-loss percentages](feedback/12-starter-swaps-short-take-profit-stop-loss-percentages.md) — October 31 follow-up; controlled offline state
+
+Proposed severities are normal and remain subject to organizer review. Reports 01–05 use no account or signer. Reports 06 and 09 use historical public-account simulations without a key or broadcast. Report 10 uses historical public-account reads only. Reports 01–06 and 09–10 concern Hideki testnet (50383), the event's Tokyo/DreamDEX region. Reports 07–08 and 11–12 test official examples offline with synthetic order/account/registry state and do not connect to a chain.
 
 ## Scope and limits
 
@@ -63,10 +68,10 @@ The public REST service was reachable but its documented staging environment ret
 
 An unauthenticated browser reproduction of the Perps-to-spot redirect matched a pre-existing public report and was excluded. Known voucher, symbol-casing and missing-error reports were also excluded. Two public participant report indexes were reviewed for duplicate screening; the organizer's private Builds and unpublished reports remain inaccessible. Exact-string behavior touches the same helper as a pre-existing report about large numeric input and error classes, so duplicate treatment of that candidate is especially uncertain.
 
-The October 30 follow-up screened six public participant indexes, official bot-kit issue/PR titles and the October 27 builder-session slides/known gotchas. No matching trigger for reports 04–06 was found there. Report 06 also distinguishes its size-before-slippage cause from existing resting-order cap, gas-floor and read-after-write findings. Report 07 distinguishes swallowed cancellation failures from existing maker position-cap, skipped-quote retry and interrupted-shutdown findings; private duplicate precedence remains unknown. Report 08 refreshed those six public indexes and official issue/PR titles; no matching new-listing/guard-cache trigger was found. Report 09 rechecked those six public heads and current official issue/PR titles and distinguishes entry requirements from existing-position side/armed-bracket findings. Report 10 refreshes the same six public heads and official issue/PR titles; no matching signed-loss analytics rounding trigger was found. Report 11 refreshes those public heads/titles and isolates post-entry stop-setup failure from existing restart and interrupted-cleanup issues. This is not complete novelty clearance: private submissions and a complete organizer-maintained known-issues list were not available. Report 05 explicitly distinguishes the current newest-window behavior from the forward-paging comparison in the SDK documentation and asks the maintainer to confirm that contract.
+The October 30 follow-up screened six public participant indexes, official bot-kit issue/PR titles and the October 27 builder-session slides/known gotchas. No matching trigger for reports 04–06 was found there. Report 06 also distinguishes its size-before-slippage cause from existing resting-order cap, gas-floor and read-after-write findings. Report 07 distinguishes swallowed cancellation failures from existing maker position-cap, skipped-quote retry and interrupted-shutdown findings; private duplicate precedence remains unknown. Report 08 refreshed those six public indexes and official issue/PR titles; no matching new-listing/guard-cache trigger was found. Report 09 rechecked those six public heads and current official issue/PR titles and distinguishes entry requirements from existing-position side/armed-bracket findings. Report 10 refreshes the same six public heads and official issue/PR titles; no matching signed-loss analytics rounding trigger was found. Report 11 refreshes those public heads/titles and isolates post-entry stop-setup failure from existing restart and interrupted-cleanup issues. Report 12 refreshes those same public heads/titles and isolates unequal short TP/SL percentage mapping in flat-start owner and watched modes from existing side, restart and setup-failure issues. This is not complete novelty clearance: private submissions and a complete organizer-maintained known-issues list were not available. Report 05 explicitly distinguishes the current newest-window behavior from the forward-paging comparison in the SDK documentation and asks the maintainer to confirm that contract.
 
 ## Method transparency
 
-AI assistance was used to investigate public documentation, prepare the scripts and write the reports. The included reproduction programs use the pinned SDK; reports 01–06 and 09–10 include public testnet reads/simulations, while reports 07–08 and 11 are controlled-source offline tests. Their timestamped outputs are included. No claim is made that the organizer has approved AI assistance or accepted these items. No private key, signature, fund claim or transaction was used.
+AI assistance was used to investigate public documentation, prepare the scripts and write the reports. The included reproduction programs use the pinned SDK; reports 01–06 and 09–10 include public testnet reads/simulations, while reports 07–08 and 11–12 are controlled-source offline tests. Their timestamped outputs are included. No claim is made that the organizer has approved AI assistance or accepted these items. No private key, signature, fund claim or transaction was used.
 
 The organizer decides eligibility, duplicate precedence, severity and rewards. This repository contains no security vulnerability report.
