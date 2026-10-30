@@ -1,0 +1,543 @@
+{
+  "at": "2026-10-30T07:09:30.362Z",
+  "kitCommit": "4e75896896e024c03e2033d5920514f249998cd6",
+  "sdk": "0.32.1",
+  "mode": "offline controlled-source harness",
+  "syntheticState": true,
+  "rpcCalls": 0,
+  "transactions": 0,
+  "fixtureDisclosure": "Healthy registry cache, registry listing, engine positions/health, timers, startup and close boundary are controlled. Actual SDK fetchPositions and upstream guard/watchList/perpMarkets/positionIn/marginSnapshot/healthRatio bodies execute. No real close is attempted.",
+  "checks": [
+    "New-market-only case reports no positions in both cycles",
+    "New-market position receives no health check or close attempt",
+    "No live loop ever asks loadMarkets to reload",
+    "Actual SDK position read never queries the new pool before refresh",
+    "New position on a cached market is detected without refresh",
+    "Old and new case guards only the cached ETH position",
+    "New market remains absent in the unrefreshed watch list",
+    "One explicit refresh exposes the new held market",
+    "Refresh control checks and requests flatten on the new market",
+    "Halted cached market remains covered as intended",
+    "All ordinary guard runs finish and call shutdown"
+  ],
+  "cases": [
+    {
+      "scenario": {
+        "name": "new_market_only",
+        "existing": false,
+        "newMarket": true
+      },
+      "logs": [
+        "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+        "no open positions to guard",
+        "no open positions to guard",
+        "guard stopped"
+      ],
+      "beforeRefresh": [],
+      "afterRefresh": [
+        "NEW/USDso:USDso"
+      ],
+      "poll": 2,
+      "loads": [
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        }
+      ],
+      "reads": [
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 2
+        }
+      ],
+      "health": [],
+      "closes": [],
+      "shutdown": 1
+    },
+    {
+      "scenario": {
+        "name": "existing_market_new_position",
+        "existing": false,
+        "newMarket": false
+      },
+      "logs": [
+        "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+        "no open positions to guard",
+        "ETH-PERP: long 0.01 (1.00 USDso) | health 1.100x maintenance | status fixture",
+        "health 1.100 is below the flatten threshold, closing the position",
+        "guard stopped"
+      ],
+      "beforeRefresh": [
+        "ETH/USDso:USDso"
+      ],
+      "afterRefresh": [
+        "ETH/USDso:USDso"
+      ],
+      "poll": 2,
+      "loads": [
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        }
+      ],
+      "reads": [
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        }
+      ],
+      "health": [
+        1
+      ],
+      "closes": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "poll": 1,
+          "label": "guard flatten"
+        }
+      ],
+      "shutdown": 1
+    },
+    {
+      "scenario": {
+        "name": "old_and_new_markets",
+        "existing": true,
+        "newMarket": true
+      },
+      "logs": [
+        "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+        "ETH-PERP: long 0.01 (1.00 USDso) | health 1.100x maintenance | status fixture",
+        "health 1.100 is below the flatten threshold, closing the position",
+        "ETH-PERP: long 0.01 (1.00 USDso) | health 1.100x maintenance | status fixture",
+        "health 1.100 is below the flatten threshold, closing the position",
+        "guard stopped"
+      ],
+      "beforeRefresh": [
+        "ETH/USDso:USDso"
+      ],
+      "afterRefresh": [
+        "ETH/USDso:USDso",
+        "NEW/USDso:USDso"
+      ],
+      "poll": 2,
+      "loads": [
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        }
+      ],
+      "reads": [
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 2
+        }
+      ],
+      "health": [
+        0,
+        1
+      ],
+      "closes": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "poll": 0,
+          "label": "guard flatten"
+        },
+        {
+          "symbol": "ETH/USDso:USDso",
+          "poll": 1,
+          "label": "guard flatten"
+        }
+      ],
+      "shutdown": 1
+    },
+    {
+      "scenario": {
+        "name": "explicit_refresh_control",
+        "existing": false,
+        "newMarket": true,
+        "refresh": true
+      },
+      "logs": [
+        "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+        "no open positions to guard",
+        "NEW-PERP: long 0.01 (1.00 USDso) | health 1.100x maintenance | status fixture",
+        "health 1.100 is below the flatten threshold, closing the position",
+        "guard stopped"
+      ],
+      "beforeRefresh": [
+        "NEW/USDso:USDso"
+      ],
+      "afterRefresh": [
+        "NEW/USDso:USDso"
+      ],
+      "poll": 2,
+      "loads": [
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": true,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        }
+      ],
+      "reads": [
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000002",
+          "poll": 2
+        }
+      ],
+      "health": [
+        1
+      ],
+      "closes": [
+        {
+          "symbol": "NEW/USDso:USDso",
+          "poll": 1,
+          "label": "guard flatten"
+        }
+      ],
+      "shutdown": 1
+    },
+    {
+      "scenario": {
+        "name": "halted_cached_market_control",
+        "existing": false,
+        "newMarket": false,
+        "halted": true
+      },
+      "logs": [
+        "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+        "no open positions to guard",
+        "ETH-PERP: long 0.01 (1.00 USDso) | health 1.100x maintenance | status fixture",
+        "health 1.100 is below the flatten threshold, closing the position",
+        "guard stopped"
+      ],
+      "beforeRefresh": [
+        "ETH/USDso:USDso"
+      ],
+      "afterRefresh": [
+        "ETH/USDso:USDso"
+      ],
+      "poll": 2,
+      "loads": [
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 0
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 1
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": true,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        },
+        {
+          "reload": false,
+          "poll": 2
+        }
+      ],
+      "reads": [
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 0
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 1
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        },
+        {
+          "pool": "0x0000000000000000000000000000000000000001",
+          "poll": 2
+        }
+      ],
+      "health": [
+        1
+      ],
+      "closes": [
+        {
+          "symbol": "ETH/USDso:USDso",
+          "poll": 1,
+          "label": "guard flatten"
+        }
+      ],
+      "shutdown": 1
+    }
+  ],
+  "sourceHashes": {
+    "guard": "5a7712eb30e5baaa8a4657301d121055ecff804e967c7f189637df309ef5e21a",
+    "markets": "95dfbbb84d114927f5a5df87f4a0d96114d3904cb98a8c06c42c3823880a0520",
+    "orders": "a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583",
+    "margin": "041cfbb5a34bc80c6ddb2d71d81b592c979826a950d617aebdbb2533ea58d23a"
+  },
+  "sdkExchangeSha256": "f2fd34c35c40fb251a36bff27fe72e9f2cf6281433bf8534c839d8b8684241c2"
+}

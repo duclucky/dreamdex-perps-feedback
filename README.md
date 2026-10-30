@@ -1,6 +1,6 @@
 # dreamDEX Perps Feedback
 
-Seven independently reproduced **normal** Feedback candidates for the dreamDEX Perps Builder Bounty. Reports 01–03 formed the original DoraHacks submission; reports 04–07 are the October 30 follow-ups. The seven-report package belongs to Build 50054. Acceptance, novelty and payment are determined by the organizer. They cover documentation/SDK/bot-kit correctness, not a demonstrated trading loss or contract exploit.
+Eight independently reproduced **normal** Feedback candidates for the dreamDEX Perps Builder Bounty. Reports 01–03 formed the original DoraHacks submission; reports 04–08 are the October 30 follow-ups. The eight-report package belongs to Build 50054. Acceptance, novelty and payment are determined by the organizer. They cover documentation/SDK/bot-kit correctness, not a demonstrated trading loss or contract exploit.
 
 ## Reproduce
 
@@ -13,6 +13,7 @@ npm run survey
 npm run verify:history
 node scripts/verify-botkit-sizing.mjs
 node scripts/verify-maker-cancel.mjs
+node scripts/verify-guard-discovery.mjs
 ```
 
 Run from this directory. These scripts do not read a private key, request a signature, claim funds or submit a transaction. `verify` uses public RPC/indexer reads and WebSocket watch acquisition/hydration; it closes the watch and exchange. The scripts have deadlines and save timestamped JSON in `evidence/`. The findings verification checks observations that establish the discrepancies; passing means the discrepancies were reproduced, not that the SDK was fixed.
@@ -22,6 +23,8 @@ Run from this directory. These scripts do not read a private key, request a sign
 `verify-botkit-sizing.mjs` checks report 06. It verifies hashes of two official bot-kit source files at the pinned commit and executes their helper bodies with all writes replaced by `eth_call` or a blocking stub. Fourteen checks passed at Tokyo block 36620783: both default-slippage calls reject for margin; four original-price/resized controls return success. The public account is read/simulated without a key. Synthetic helper `sent`/`fills` values are not mined transactions or execution evidence. Node 24 built-in type stripping is used; historical RPC availability is required.
 
 `verify-maker-cancel.mjs` checks report 07 with 12 offline assertions across five controlled scenarios. It verifies three source hashes and executes actual maker/helper logic with synthetic exchange state, startup and timers. Healthy and already-filled controls clean up; unresolved cancellation cases leave original IDs while the strategy reports cleanup. Only GitHub source downloads use the network. No RPC, key or real orders are involved.
+
+`verify-guard-discovery.mjs` checks report 08 with 11 offline assertions across five controlled scenarios. Hash-pinned guard/helper bodies and the installed SDK position enumerator run with fixture registry/cache, engine, time and close boundaries. New-listing exposure is missed until explicit refresh; new exposure on cached/halted markets remains covered. No RPC or real close is attempted.
 
 ## Reports
 
@@ -35,7 +38,9 @@ Run from this directory. These scripts do not read a private key, request a sign
 
 - [07 — Maker forgets quote IDs after cancellation failure](feedback/07-maker-forgets-orders-after-cancel-failure.md) — October 30 follow-up
 
-Proposed severities are normal and remain subject to organizer review. Reports 01–05 use no account or signer. Report 06 uses a public historical account address for read-only simulation; it never uses a key, signer or broadcast. Reports 01–06 concern Hideki testnet (50383), the event's Tokyo/DreamDEX region. Report 07 tests the official example offline with fully synthetic order state and does not connect to a chain.
+- [08 — Guard misses exposure on markets listed after startup](feedback/08-guard-cached-registry-misses-new-markets.md) — October 30 follow-up
+
+Proposed severities are normal and remain subject to organizer review. Reports 01–05 use no account or signer. Report 06 uses a public historical account address for read-only simulation; it never uses a key, signer or broadcast. Reports 01–06 concern Hideki testnet (50383), the event's Tokyo/DreamDEX region. Reports 07–08 test official examples offline with synthetic order/account/registry state and do not connect to a chain.
 
 ## Scope and limits
 
@@ -43,10 +48,10 @@ The public REST service was reachable but its documented staging environment ret
 
 An unauthenticated browser reproduction of the Perps-to-spot redirect matched a pre-existing public report and was excluded. Known voucher, symbol-casing and missing-error reports were also excluded. Two public participant report indexes were reviewed for duplicate screening; the organizer's private Builds and unpublished reports remain inaccessible. Exact-string behavior touches the same helper as a pre-existing report about large numeric input and error classes, so duplicate treatment of that candidate is especially uncertain.
 
-The October 30 follow-up screened six public participant indexes, official bot-kit issue/PR titles and the October 27 builder-session slides/known gotchas. No matching trigger for reports 04–06 was found there. Report 06 also distinguishes its size-before-slippage cause from existing resting-order cap, gas-floor and read-after-write findings. Report 07 distinguishes swallowed cancellation failures from existing maker position-cap, skipped-quote retry and interrupted-shutdown findings; private duplicate precedence remains unknown. This is not complete novelty clearance: private submissions and a complete organizer-maintained known-issues list were not available. Report 05 explicitly distinguishes the current newest-window behavior from the forward-paging comparison in the SDK documentation and asks the maintainer to confirm that contract.
+The October 30 follow-up screened six public participant indexes, official bot-kit issue/PR titles and the October 27 builder-session slides/known gotchas. No matching trigger for reports 04–06 was found there. Report 06 also distinguishes its size-before-slippage cause from existing resting-order cap, gas-floor and read-after-write findings. Report 07 distinguishes swallowed cancellation failures from existing maker position-cap, skipped-quote retry and interrupted-shutdown findings; private duplicate precedence remains unknown. Report 08 refreshed those six public indexes and official issue/PR titles; no matching new-listing/guard-cache trigger was found. This is not complete novelty clearance: private submissions and a complete organizer-maintained known-issues list were not available. Report 05 explicitly distinguishes the current newest-window behavior from the forward-paging comparison in the SDK documentation and asks the maintainer to confirm that contract.
 
 ## Method transparency
 
-AI assistance was used to investigate public documentation, prepare the scripts and write the reports. The included reproduction programs use the pinned SDK; reports 01–06 include public testnet reads/simulations, while report 07 is a controlled-source offline test. Their timestamped outputs are included. No claim is made that the organizer has approved AI assistance or accepted these items. No private key, signature, fund claim or transaction was used.
+AI assistance was used to investigate public documentation, prepare the scripts and write the reports. The included reproduction programs use the pinned SDK; reports 01–06 include public testnet reads/simulations, while reports 07–08 are controlled-source offline tests. Their timestamped outputs are included. No claim is made that the organizer has approved AI assistance or accepted these items. No private key, signature, fund claim or transaction was used.
 
 The organizer decides eligibility, duplicate precedence, severity and rewards. This repository contains no security vulnerability report.
